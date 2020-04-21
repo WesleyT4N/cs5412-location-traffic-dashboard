@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   return (
     <Container className={classes.dashboardRoot}>
-      <Container className={classes.locationHeader} maxwidth={false}>
+      <Container className={classes.locationHeader}>
         <Typography variant="h3" display="inline">
           Location Name
         </Typography>

@@ -13,7 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import styles from './Header.styles';
 
-const Header = () => {
+const Header = ({ handleOpenModal }) => {
   const classes = styles();
   return (
     <AppBar position="static">
@@ -43,6 +43,7 @@ const Header = () => {
               variant="outlined"
               color="inherit"
               className={classes.headerButton}
+              onClick={handleOpenModal}
             >
               <AddIcon />
               Register Location
