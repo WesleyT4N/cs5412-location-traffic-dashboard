@@ -13,9 +13,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TrafficCount from './cards/TrafficCount';
 import TrafficHistory from './cards/TrafficHistory';
 import SensorStatistics from './cards/SensorStatstics';
+import { locationModalMode } from './modal';
 import styles from './styles/Dashboard.styles';
 
-const Dashboard = () => {
+const Dashboard = ({ handleOpenModal }) => {
   const classes = styles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -41,10 +42,10 @@ const Dashboard = () => {
         >
           <EditIcon />
         </IconButton>
-
         <IconButton
           className={classes.locationHeaderButton}
           aria-controls="delete-location"
+          onClick={handleOpenModal(locationModalMode.DELETE)}
         >
           <DeleteIcon />
         </IconButton>
@@ -55,7 +56,9 @@ const Dashboard = () => {
           open={Boolean(anchorEl)}
           onClose={handleEditClose}
         >
-          <MenuItem>Edit Location</MenuItem>
+          <MenuItem onClick={handleOpenModal(locationModalMode.EDIT)}>
+            Edit Location
+          </MenuItem>
           <MenuItem>Edit Sensors</MenuItem>
         </Menu>
       </Container>

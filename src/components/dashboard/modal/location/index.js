@@ -1,1 +1,1 @@
-export { default as CreateLocationModal } from './CreateLocationModal';
+export { default as LocationModal, locationModalMode } from './LocationModal';

@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
-import { Container } from '@material-ui/core';
-
 import Header from '../header';
 import Dashboard from './Dashboard';
 import styles from './styles/DashboardContainer.styles';
-import { CreateLocationModal, Modal } from './modal';
+import { locationModalMode, LocationModal } from './modal';
 
 const DashboardContainer = () => {
   const classes = styles();
-  const [open, setOpen] = useState(false);
+  const [state, setState] = useState({
+    open: false,
+    modalMode: locationModalMode.CREATE,
+  });
 
-  const handleOpenModal = () => {
-    setOpen(true);
+  const handleOpenModal = (modalState) => () => {
+    setState({ ...state, open: true, modalMode: modalState });
   };
 
   const handleCloseModal = () => {
-    setOpen(false);
+    setState({ ...state, open: false });
   };
 
   return (
     <div className={classes.root}>
-      <Header handleOpenModal={handleOpenModal} />
-      <Dashboard />
-      <CreateLocationModal
-        modalOpen={open}
+      <Header handleOpenModal={handleOpenModal(locationModalMode.CREATE)} />
+      <Dashboard handleOpenModal={handleOpenModal} />
+      <LocationModal
+        modalOpen={state.open}
+        modalMode={state.modalMode}
         handleClose={handleCloseModal}
-        handleSubmit={handleCloseModal}
       />
     </div>
   );

@@ -1,4 +1,1 @@
-import { CreateLocationModal } from './location';
-import Modal from './Modal';
-
-export { CreateLocationModal, Modal };
+export { LocationModal, locationModalMode } from './location';
