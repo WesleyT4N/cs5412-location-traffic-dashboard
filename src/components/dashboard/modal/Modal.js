@@ -8,7 +8,7 @@ const Modal = ({ modalTitle, open, handleClose, children }) => {
       open={open}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
-      madWidth="lg"
+      maxWidth="lg"
       // fullWidth
     >
       <DialogTitle id="form-dialog-title">{modalTitle}</DialogTitle>

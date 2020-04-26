@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,7 +7,11 @@ import TextField from '@material-ui/core/TextField';
 
 import Modal from '../Modal';
 import styles from './styles/LocationModal.styles';
-import { createLocation } from 'actions/location';
+import {
+  createLocation,
+  updateLocation,
+  deleteLocation,
+} from 'actions/location';
 
 export const locationModalMode = {
   CREATE: 'CREATE',
@@ -16,16 +20,28 @@ export const locationModalMode = {
 };
 
 const LocationModal = ({
-  location = { name: '', capacity: '' },
+  location = { name: '', capacity: '', id: '' },
   modalOpen,
   modalMode,
   handleClose,
 }) => {
   const classes = styles();
-  const [state, setState] = useState({
-    name: location.name,
-    capacity: location.capacity,
-  });
+
+  const initState = {
+    name: location !== null ? location.name : '',
+    capacity: location !== null ? location.capacity : '',
+    id: location !== null ? location.id : null,
+  };
+  const [state, setState] = useState(initState);
+
+  useEffect(() => {
+    const initState = {
+      name: location !== null ? location.name : '',
+      capacity: location !== null ? location.capacity : '',
+      id: location !== null ? location.id : null,
+    };
+    setState(initState);
+  }, [modalOpen, location]);
 
   const dispatch = useDispatch();
 
@@ -33,13 +49,17 @@ const LocationModal = ({
     switch (modalMode) {
       case locationModalMode.CREATE:
         dispatch(createLocation(state));
-        handleClose();
         break;
       case locationModalMode.EDIT:
+        dispatch(updateLocation(state));
+        break;
       case locationModalMode.DELETE:
+        dispatch(deleteLocation(state));
+        break;
       default:
-        handleClose();
+        break;
     }
+    handleClose();
   };
 
   return (
