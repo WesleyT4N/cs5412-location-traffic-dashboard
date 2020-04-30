@@ -1,4 +1,36 @@
-import { handleErrors, requestStatus } from './utils';
+import { handleErrors } from './utils';
+
+export const FETCH_ALL_LOCATIONS_BEGIN = 'FETCH_ALL_LOCATIONS_BEGIN';
+export const fetchAllLocationsBegin = () => ({
+  type: FETCH_ALL_LOCATIONS_BEGIN,
+});
+
+export const FETCH_ALL_LOCATIONS_SUCCESS = 'FETCH_ALL_LOCATIONS_SUCCESS';
+export const fetchAllLocationsSuccess = (locations) => ({
+  type: FETCH_ALL_LOCATIONS_SUCCESS,
+  payload: { locations },
+});
+
+export const FETCH_ALL_LOCATIONS_ERROR = 'FETCH_ALL_LOCATIONS_ERROR';
+export const fetchAllLocationsError = (error) => ({
+  type: FETCH_ALL_LOCATIONS_ERROR,
+  payload: { error },
+});
+
+export const fetchAllLocations = () => async (dispatch) => {
+  dispatch(fetchAllLocationsBegin());
+  const url = process.env.REACT_APP_REST_API_URL + '/locations';
+  return fetch(url, {
+    method: 'get',
+  })
+    .then(handleErrors)
+    .then((response) => response.json())
+    .then((json) => {
+      dispatch(fetchAllLocationsSuccess(json));
+      return json;
+    })
+    .catch((error) => dispatch(fetchAllLocationsError(error)));
+};
 
 export const CREATE_LOCATION_BEGIN = 'CREATE_LOCATION_BEGIN';
 export const createLocationBegin = () => ({
@@ -105,3 +137,9 @@ export const deleteLocation = (location) => async (dispatch) => {
     .then(() => dispatch(deleteLocationSuccess(location)))
     .catch((error) => dispatch(deleteLocationError(error)));
 };
+
+export const SET_CURRENT_LOCATION = 'SET_CURRENT_LOCATION';
+export const setCurrentLocation = (location) => ({
+  type: SET_CURRENT_LOCATION,
+  payload: { locationId: location.id },
+});

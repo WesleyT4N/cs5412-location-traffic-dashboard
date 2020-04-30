@@ -1,4 +1,7 @@
 import {
+  FETCH_ALL_LOCATIONS_BEGIN,
+  FETCH_ALL_LOCATIONS_SUCCESS,
+  FETCH_ALL_LOCATIONS_ERROR,
   CREATE_LOCATION_BEGIN,
   CREATE_LOCATION_SUCCESS,
   CREATE_LOCATION_ERROR,
@@ -8,6 +11,7 @@ import {
   DELETE_LOCATION_BEGIN,
   DELETE_LOCATION_SUCCESS,
   DELETE_LOCATION_ERROR,
+  SET_CURRENT_LOCATION,
 } from '../actions';
 
 const initState = {
@@ -22,6 +26,7 @@ const locations = (state = initState, action) => {
     case CREATE_LOCATION_BEGIN:
     case UPDATE_LOCATION_BEGIN:
     case DELETE_LOCATION_BEGIN:
+    case FETCH_ALL_LOCATIONS_BEGIN:
       return {
         ...state,
         loading: true,
@@ -30,10 +35,24 @@ const locations = (state = initState, action) => {
     case CREATE_LOCATION_ERROR:
     case UPDATE_LOCATION_ERROR:
     case DELETE_LOCATION_ERROR:
+    case FETCH_ALL_LOCATIONS_ERROR:
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error: action.payload.error.message,
+      };
+    case FETCH_ALL_LOCATIONS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        all: action.payload.locations,
+        current:
+          state.current !== null
+            ? action.payload.locations.find(
+                (loc) => loc.id === state.current.id
+              )
+            : null,
+        error: null,
       };
     case CREATE_LOCATION_SUCCESS:
       return {
@@ -58,6 +77,13 @@ const locations = (state = initState, action) => {
         ...state,
         all: state.all.filter((loc) => loc.id !== action.payload.location.id),
         current: null,
+        loading: false,
+      };
+    case SET_CURRENT_LOCATION:
+      return {
+        ...state,
+        current: state.all.find((loc) => loc.id === action.payload.locationId),
+        loading: false,
       };
     default:
       return state;

@@ -39,7 +39,9 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
   },
   inputRoot: {
-    color: 'inherit',
+    color: theme.palette.common.white,
+    // marginTop: theme.spacing(1),
+    textAlign: 'center',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -47,9 +49,14 @@ export default makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
+    color: theme.palette.common.white,
     // [theme.breakpoints.up('md')]: {
     //   width: '60ch',
     // },
+  },
+  inputLoadingIndicator: {
+    display: 'block',
+    margin: 'auto',
   },
   headerButtonContainer: {
     textAlign: 'right',
@@ -59,5 +66,8 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       width: 'auto',
     },
+  },
+  headerMenuItem: {
+    textAlign: 'center',
   },
 }));

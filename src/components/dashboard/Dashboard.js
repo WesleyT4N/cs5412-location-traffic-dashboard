@@ -1,31 +1,39 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Container,
   Typography,
   Grid,
   IconButton,
-  Menu,
-  MenuItem,
+  Button,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import TrafficCount from './cards/TrafficCount';
 import TrafficHistory from './cards/TrafficHistory';
-import SensorStatistics from './cards/SensorStatstics';
-import { locationModalMode } from './modal';
+import PeakTraffic from './cards/PeakTraffic';
+import { locationModalMode, modalType } from './modal';
 import styles from './styles/Dashboard.styles';
+import { fetchSensorsForLocation } from 'actions/sensor';
 
 const Dashboard = ({ currentLocation, handleOpenModal }) => {
   const classes = styles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
 
-  const handleEditClick = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
+  const handleEditClick = handleOpenModal(
+    locationModalMode.EDIT,
+    modalType.LOCATION
+  );
 
-  const handleEditClose = () => {
-    setAnchorEl(null);
+  const handleDeleteClick = handleOpenModal(
+    locationModalMode.DELETE,
+    modalType.LOCATION
+  );
+
+  const handleManageSensors = () => {
+    handleOpenModal(null, modalType.SENSORS)();
+    dispatch(fetchSensorsForLocation(currentLocation));
   };
 
   return (
@@ -37,7 +45,7 @@ const Dashboard = ({ currentLocation, handleOpenModal }) => {
             : 'Please select/create a location'}
         </Typography>
         {currentLocation ? (
-          <div>
+          <div className={classes.locationHeaderButtonGroup}>
             <IconButton
               className={classes.locationHeaderButton}
               aria-controls="edit-location"
@@ -49,31 +57,26 @@ const Dashboard = ({ currentLocation, handleOpenModal }) => {
             <IconButton
               className={classes.locationHeaderButton}
               aria-controls="delete-location"
-              onClick={handleOpenModal(locationModalMode.DELETE)}
+              onClick={handleDeleteClick}
             >
               <DeleteIcon />
             </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleEditClose}
+            <Button
+              variant="outlined"
+              onClick={handleManageSensors}
+              className={classes.locationHeaderButton}
             >
-              <MenuItem onClick={handleOpenModal(locationModalMode.EDIT)}>
-                Edit Location
-              </MenuItem>
-              <MenuItem>Edit Sensors</MenuItem>
-            </Menu>
+              Manage Sensors
+            </Button>
           </div>
         ) : null}
       </Container>
       <Grid container spacing={2} className={classes.cardContainer}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={6}>
           <TrafficCount />
         </Grid>
-        <Grid item xs={12} sm={9}>
-          <SensorStatistics />
+        <Grid item xs={12} sm={6}>
+          <PeakTraffic />
         </Grid>
         <Grid item xs={12}>
           <TrafficHistory />

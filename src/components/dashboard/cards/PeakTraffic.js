@@ -2,11 +2,11 @@ import React from 'react';
 import styles from './styles/Card.styles';
 import { Card, CardHeader, CardContent, Typography } from '@material-ui/core';
 
-const TrafficCount = () => {
+const PeakTraffic = () => {
   const classes = styles();
   return (
     <Card className={classes.root}>
-      <CardHeader title="Current Traffic" />
+      <CardHeader title="Peak Traffic" />
       <CardContent>
         <Typography>Placeholder</Typography>
       </CardContent>
@@ -14,4 +14,4 @@ const TrafficCount = () => {
   );
 };
 
-export default TrafficCount;
+export default PeakTraffic;
