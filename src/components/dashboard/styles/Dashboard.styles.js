@@ -12,6 +12,7 @@ export default makeStyles((theme) => ({
   },
   locationHeader: {
     display: 'flex',
+    alignItems: 'center',
   },
   locationHeaderButton: {
     marginLeft: theme.spacing(1),

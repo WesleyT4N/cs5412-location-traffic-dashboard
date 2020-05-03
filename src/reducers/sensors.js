@@ -11,7 +11,7 @@ import {
   DELETE_SENSOR_BEGIN,
   DELETE_SENSOR_SUCCESS,
   DELETE_SENSOR_ERROR,
-} from 'actions/sensor';
+} from 'actions';
 
 const initState = {
   loading: false,

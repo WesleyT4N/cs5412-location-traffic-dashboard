@@ -17,6 +17,8 @@ import { locationModalMode, modalType } from './modal';
 import styles from './styles/Dashboard.styles';
 import { fetchSensorsForLocation } from 'actions/sensor';
 
+const REFRESH_RATE = 10000;
+
 const Dashboard = ({ currentLocation, handleOpenModal }) => {
   const classes = styles();
   const dispatch = useDispatch();
@@ -73,10 +75,10 @@ const Dashboard = ({ currentLocation, handleOpenModal }) => {
       </Container>
       <Grid container spacing={2} className={classes.cardContainer}>
         <Grid item xs={12} sm={6}>
-          <TrafficCount />
+          <TrafficCount location={currentLocation} refreshRate={REFRESH_RATE} />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <PeakTraffic />
+          <PeakTraffic location={currentLocation} refreshRate={REFRESH_RATE} />
         </Grid>
         <Grid item xs={12}>
           <TrafficHistory />
