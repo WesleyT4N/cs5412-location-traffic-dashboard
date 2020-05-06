@@ -12,7 +12,6 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { fetchAllLocations, setCurrentLocation } from 'actions/location';
-import { fetchSensorsForLocation } from 'actions/sensor';
 import AddIcon from '@material-ui/icons/Add';
 import PlaceIcon from '@material-ui/icons/Place';
 

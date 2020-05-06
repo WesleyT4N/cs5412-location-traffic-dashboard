@@ -5,7 +5,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Typography,
   CircularProgress,
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
