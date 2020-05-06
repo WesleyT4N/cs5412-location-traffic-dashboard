@@ -4,7 +4,6 @@ export default makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'hidden',
+    minHeight: '100vh',
   },
 }));
