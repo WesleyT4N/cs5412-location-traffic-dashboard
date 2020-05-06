@@ -4,11 +4,14 @@ export default makeStyles((theme) => ({
   root: {
     height: '300px',
   },
+  taller: {
+    height: '350px',
+  },
   content: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '150px',
+    minHeight: '150px',
     fontWeight: 700,
   },
   icon: {
@@ -25,5 +28,9 @@ export default makeStyles((theme) => ({
   cardTypography: {
     display: 'flex',
     alignItems: 'center',
+  },
+  chart: {
+    height: '50px',
+    width: '100%',
   },
 }));

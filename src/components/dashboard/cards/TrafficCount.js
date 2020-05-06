@@ -41,7 +41,7 @@ const TrafficCount = ({ location, refreshRate }) => {
       <CardHeader title="Current Traffic" subheader="" />
       <CardContent className={classes.content}>
         {(loading && !location) ||
-        !trafficCount ||
+        trafficCount === null ||
         prevLocation !== location ? (
           <CircularProgress color="primary" />
         ) : (

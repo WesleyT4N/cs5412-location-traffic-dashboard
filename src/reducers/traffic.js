@@ -7,6 +7,9 @@ import {
   FETCH_PEAK_TRAFFIC_BEGIN,
   FETCH_PEAK_TRAFFIC_SUCCESS,
   FETCH_PEAK_TRAFFIC_ERROR,
+  FETCH_TRAFFIC_HISTORY_BEGIN,
+  FETCH_TRAFFIC_HISTORY_SUCCESS,
+  FETCH_TRAFFIC_HISTORY_ERROR,
 } from 'actions';
 
 const trafficCount = (
@@ -68,9 +71,40 @@ const peakTraffic = (
   }
 };
 
+const trafficHistory = (
+  state = { trafficHistory: null, loading: false, error: null },
+  action
+) => {
+  switch (action.type) {
+    case FETCH_TRAFFIC_HISTORY_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case FETCH_TRAFFIC_HISTORY_ERROR:
+      alert(action.payload.error.message);
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error.message,
+      };
+    case FETCH_TRAFFIC_HISTORY_SUCCESS:
+      return {
+        ...state,
+        trafficHistory: action.payload.trafficHistory,
+        loading: false,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
 const traffic = combineReducers({
   trafficCount,
   peakTraffic,
+  trafficHistory,
 });
 
 export default traffic;

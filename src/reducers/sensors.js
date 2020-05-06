@@ -38,6 +38,7 @@ const sensors = (state = initState, action) => {
     case CREATE_SENSOR_ERROR:
     case UPDATE_SENSOR_ERROR:
     case DELETE_SENSOR_ERROR:
+      alert(action.payload.error.message);
       return {
         ...state,
         loading: false,

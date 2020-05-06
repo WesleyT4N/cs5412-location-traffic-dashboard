@@ -36,6 +36,7 @@ const locations = (state = initState, action) => {
     case UPDATE_LOCATION_ERROR:
     case DELETE_LOCATION_ERROR:
     case FETCH_ALL_LOCATIONS_ERROR:
+      alert(action.payload.error.message);
       return {
         ...state,
         loading: false,

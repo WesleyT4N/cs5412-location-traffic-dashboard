@@ -42,7 +42,9 @@ const PeakTraffic = ({ location, refreshRate }) => {
     <Card className={classes.root}>
       <CardHeader title="Peak Traffic" subheader="over the past 12 hours" />
       <CardContent className={classes.content}>
-        {(loading && !location) || !peakTraffic || prevLocation !== location ? (
+        {(loading && !location) ||
+        peakTrafficCount === null ||
+        prevLocation !== location ? (
           <CircularProgress color="primary" />
         ) : (
           <div className={classes.contentInner}>

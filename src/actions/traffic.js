@@ -22,7 +22,6 @@ export const fetchTrafficCount = (location) => async (dispatch) => {
   const url = new URL(
     `${process.env.REACT_APP_REST_API_URL}/locations/${location.id}/traffic_count`
   );
-  url.search = new URLSearchParams({ sensor_ids: location.sensors });
   return fetch(url, {
     method: 'get',
   })
@@ -62,7 +61,6 @@ export const fetchPeakTraffic = (location) => async (dispatch) => {
   const endTime = new Date();
   startTime.setHours(endTime.getHours() - 12);
   url.search = new URLSearchParams({
-    sensor_ids: location.sensors,
     start_time: Math.trunc(startTime.getTime() / 1000),
     end_time: Math.trunc(endTime.getTime() / 1000),
   });
@@ -76,4 +74,48 @@ export const fetchPeakTraffic = (location) => async (dispatch) => {
       return json;
     })
     .catch((error) => dispatch(fetchPeakTrafficError(error)));
+};
+
+export const FETCH_TRAFFIC_HISTORY_BEGIN = 'FETCH_TRAFFIC_HISTORY_BEGIN';
+export const fetchTrafficHistoryBegin = () => ({
+  type: FETCH_TRAFFIC_HISTORY_BEGIN,
+});
+
+export const FETCH_TRAFFIC_HISTORY_SUCCESS = 'FETCH_TRAFFIC_HISTORY_SUCCESS';
+export const fetchTrafficHistorySuccess = (trafficHistory, locationId) => ({
+  type: FETCH_TRAFFIC_HISTORY_SUCCESS,
+  payload: { trafficHistory, locationId },
+});
+
+export const FETCH_TRAFFIC_HISTORY_ERROR = 'FETCH_TRAFFIC_HISTORY_ERROR';
+export const fetchTrafficHistoryError = (error) => ({
+  type: FETCH_TRAFFIC_HISTORY_ERROR,
+  payload: { error },
+});
+
+export const fetchTrafficHistory = (location) => async (dispatch) => {
+  dispatch(fetchTrafficHistoryBegin());
+  const url = new URL(
+    `${process.env.REACT_APP_REST_API_URL}/locations/${location.id}/traffic_history`
+  );
+
+  const startTime = new Date();
+  const endTime = new Date();
+  startTime.setHours(endTime.getHours() - 12);
+  startTime.setMinutes(0);
+  startTime.setSeconds(0);
+  url.search = new URLSearchParams({
+    start_time: Math.trunc(startTime.getTime() / 1000),
+    end_time: Math.trunc(endTime.getTime() / 1000),
+  });
+  return fetch(url, {
+    method: 'get',
+  })
+    .then(handleErrors)
+    .then((response) => response.json())
+    .then((json) => {
+      dispatch(fetchTrafficHistorySuccess(json.trafficHistory, location.id));
+      return json;
+    })
+    .catch((error) => dispatch(fetchTrafficHistoryError(error)));
 };

@@ -81,7 +81,7 @@ const Dashboard = ({ currentLocation, handleOpenModal }) => {
           <PeakTraffic location={currentLocation} refreshRate={REFRESH_RATE} />
         </Grid>
         <Grid item xs={12}>
-          <TrafficHistory />
+          <TrafficHistory location={currentLocation} refreshRate={1000 * 60} />
         </Grid>
       </Grid>
     </Container>
