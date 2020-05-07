@@ -47,12 +47,6 @@ const locations = (state = initState, action) => {
         ...state,
         loading: false,
         all: action.payload.locations,
-        current:
-          state.current !== null
-            ? action.payload.locations.find(
-                (loc) => loc.id === state.current.id
-              )
-            : null,
         error: null,
       };
     case CREATE_LOCATION_SUCCESS:

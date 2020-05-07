@@ -58,7 +58,7 @@ const PeakTraffic = ({ location, refreshRate }) => {
             </Typography>
             <Typography
               color="primary"
-              variant="h3"
+              variant="h4"
               className={classes.cardTypography}
             >
               @ {peakTrafficTime}
