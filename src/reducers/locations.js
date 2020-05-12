@@ -11,7 +11,11 @@ import {
   DELETE_LOCATION_BEGIN,
   DELETE_LOCATION_SUCCESS,
   DELETE_LOCATION_ERROR,
-  SET_CURRENT_LOCATION,
+  CREATE_SENSOR_SUCCESS,
+  DELETE_SENSOR_SUCCESS,
+  SET_CURRENT_LOCATION_BEGIN,
+  SET_CURRENT_LOCATION_SUCCESS,
+  SET_CURRENT_LOCATION_ERROR,
 } from '../actions';
 
 const initState = {
@@ -27,6 +31,7 @@ const locations = (state = initState, action) => {
     case UPDATE_LOCATION_BEGIN:
     case DELETE_LOCATION_BEGIN:
     case FETCH_ALL_LOCATIONS_BEGIN:
+    case SET_CURRENT_LOCATION_BEGIN:
       return {
         ...state,
         loading: true,
@@ -36,6 +41,7 @@ const locations = (state = initState, action) => {
     case UPDATE_LOCATION_ERROR:
     case DELETE_LOCATION_ERROR:
     case FETCH_ALL_LOCATIONS_ERROR:
+    case SET_CURRENT_LOCATION_ERROR:
       alert(action.payload.error.message);
       return {
         ...state,
@@ -73,12 +79,61 @@ const locations = (state = initState, action) => {
         all: state.all.filter((loc) => loc.id !== action.payload.location.id),
         current: null,
         loading: false,
+        error: null,
       };
-    case SET_CURRENT_LOCATION:
+    case CREATE_SENSOR_SUCCESS:
       return {
         ...state,
-        current: state.all.find((loc) => loc.id === action.payload.locationId),
+        all: state.all.map((loc) =>
+          loc.id === action.payload.sensor.locationId
+            ? {
+                ...loc,
+                sensors: loc.sensors.concat([action.payload.sensor.id]),
+              }
+            : loc
+        ),
+        current:
+          state.current.id === action.payload.sensor.locationId
+            ? {
+                ...state.current,
+                sensors: state.current.sensors.concat([
+                  action.payload.sensor.id,
+                ]),
+              }
+            : state.current,
+      };
+    case DELETE_SENSOR_SUCCESS:
+      return {
+        ...state,
+        all: state.all.map((loc) =>
+          loc.id === action.payload.sensor.locationId
+            ? {
+                ...loc,
+                sensors: loc.sensors.filter(
+                  (s) => s.id !== action.payload.sensor.id
+                ),
+              }
+            : loc
+        ),
+        current:
+          state.current.id === action.payload.sensor.locationId
+            ? {
+                ...state.current,
+                sensors: state.current.sensors.filter(
+                  (s) => s.id !== action.payload.sensor.id
+                ),
+              }
+            : state.current,
+      };
+    case SET_CURRENT_LOCATION_SUCCESS:
+      return {
+        ...state,
+        all: state.all.map((loc) =>
+          loc.id === action.payload.location.id ? action.payload.location : loc
+        ),
+        current: action.payload.location,
         loading: false,
+        error: null,
       };
     default:
       return state;

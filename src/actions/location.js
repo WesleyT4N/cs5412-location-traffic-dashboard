@@ -138,8 +138,34 @@ export const deleteLocation = (location) => async (dispatch) => {
     .catch((error) => dispatch(deleteLocationError(error)));
 };
 
-export const SET_CURRENT_LOCATION = 'SET_CURRENT_LOCATION';
-export const setCurrentLocation = (location) => ({
-  type: SET_CURRENT_LOCATION,
-  payload: { locationId: location.id },
+export const SET_CURRENT_LOCATION_BEGIN = 'SET_CURRENT_LOCATION_BEGIN';
+export const setCurrentLocationBegin = () => ({
+  type: SET_CURRENT_LOCATION_BEGIN,
 });
+
+export const SET_CURRENT_LOCATION_SUCCESS = 'SET_CURRENT_LOCATION_SUCCESS';
+export const setCurrentLocationSuccess = (location) => ({
+  type: SET_CURRENT_LOCATION_SUCCESS,
+  payload: { location },
+});
+
+export const SET_CURRENT_LOCATION_ERROR = 'SET_CURRENT_LOCATION_ERROR';
+export const setCurrentLocationError = (error) => ({
+  type: SET_CURRENT_LOCATION_ERROR,
+  payload: { error },
+});
+
+export const setCurrentLocation = (location) => async (dispatch) => {
+  dispatch(setCurrentLocationBegin());
+  const url = process.env.REACT_APP_REST_API_URL + '/locations/' + location.id;
+  return fetch(url, {
+    method: 'get',
+  })
+    .then(handleErrors)
+    .then((response) => response.json())
+    .then((json) => {
+      dispatch(setCurrentLocationSuccess(json));
+      return json;
+    })
+    .catch((error) => dispatch(setCurrentLocationError(error)));
+};
